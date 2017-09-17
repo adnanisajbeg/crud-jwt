@@ -1,7 +1,6 @@
-package com.rest.example.service;
+package com.rest.example.validator;
 
 import com.rest.example.model.User;
-import com.rest.example.validator.UserValidator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,8 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @Author: Adnan Isajbegovic
  * @Created: 2017-09-17
  */
-public class UserCollectionServiceTest {
-    UserCollectionService userCollectionService = new UserCollectionService();
+public class UserValidatorTest {
+    UserValidator userValidator;
 
     private User user;
     private User userForDoubleSave;
@@ -25,10 +24,12 @@ public class UserCollectionServiceTest {
     private String password = "pass123456";
     private String username = "john.doe";
     private String usernameForDoubleSave = "smith.doe";
+    private String veryShortUsername = "rr";
+    private String veryLargeUsername = "ddsdasdasdasdasdasdaddsaasdasddasd";
 
     @Before
     public void setup() {
-        userCollectionService.userValidator = new UserValidator();
+        userValidator = new UserValidator();
 
         user = new User()
                 .setFirstName(firstName)
@@ -57,34 +58,49 @@ public class UserCollectionServiceTest {
                 .addRole(1);
     }
 
+
     @Test
-    public void service_creation() {
-        assertThat(userCollectionService).isNotNull();
+    public void validator_created() {
+        assertThat(userValidator).isNotNull();
     }
 
     @Test
-    public void service_saves_user() {
-        int id = userCollectionService.save(user);
-        assertThat(id).isGreaterThan(0);
+    public void return_false_when_user_is_null() {
+        assertThat(userValidator.newUserIsValid(null)).isFalse();
     }
 
     @Test
-    public void service_does_not_save_null_user() {
-        int id = userCollectionService.save(null);
-        assertThat(id).isEqualTo(0);
+    public void return_false_for_null_username() {
+        assertThat(userValidator.newUserIsValid(userWithoutUsername)).isFalse();
     }
 
     @Test
-    public void service_does_not_save_new_user_with_existing_username() {
-        int id = userCollectionService.save(userForDoubleSave);
-        int idAgain = userCollectionService.save(userForDoubleSave);
-        assertThat(id).isGreaterThan(0);
-        assertThat(idAgain).isEqualTo(0);
+    public void validate_username_return_false_when_given_null_username() {
+        assertThat(userValidator.validateUsername(null)).isFalse();
     }
 
     @Test
-    public void service_does_not_save_user_without_username() {
-        int id = userCollectionService.save(userWithoutUsername);
-        assertThat(id).isEqualTo(0);
+    public void validate_username_return_false_when_given_empty_username() {
+        assertThat(userValidator.validateUsername("")).isFalse();
+    }
+
+    @Test
+    public void validate_username_return_false_when_given_blank_username() {
+        assertThat(userValidator.validateUsername("     ")).isFalse();
+    }
+
+    @Test
+    public void validate_username_return_true_when_given_valid_username() {
+        assertThat(userValidator.validateUsername(username)).isTrue();
+    }
+
+    @Test
+    public void validate_username_return_false_when_given_to_short_username() {
+        assertThat(userValidator.validateUsername(veryShortUsername)).isFalse();
+    }
+
+    @Test
+    public void validate_username_return_false_when_given_to_large_username() {
+        assertThat(userValidator.validateUsername(veryLargeUsername)).isFalse();
     }
 }
