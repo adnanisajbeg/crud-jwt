@@ -22,17 +22,36 @@ public class UserCollectionServiceTest {
     private String password = "pass123456";
     private String username = "john.doe";
     private String usernameForDoubleSave = "smith.doe";
+    private String veryShortUsername = "rr";
+    private String veryLargeUsername = "ddsdasdasdasdasdasdaddsaasdasddasd";
 
     @Before
     public void setup() {
-        user = new User().setFirstName(firstName).setLastName(lastName).setEmail(email).setPhoneNumber(phoneNumber)
-                .setUsername(username).setPassword(password).addRole(1);
+        user = new User()
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setEmail(email)
+                .setPhoneNumber(phoneNumber)
+                .setUsername(username)
+                .setPassword(password)
+                .addRole(1);
 
-        userForDoubleSave = new User().setFirstName(firstNameForDoubleSave).setLastName(lastName).setEmail(email)
-                .setPhoneNumber(phoneNumber).setUsername(usernameForDoubleSave).setPassword(password).addRole(1);
+        userForDoubleSave = new User()
+                .setFirstName(firstNameForDoubleSave)
+                .setLastName(lastName)
+                .setEmail(email)
+                .setPhoneNumber(phoneNumber)
+                .setUsername(usernameForDoubleSave)
+                .setPassword(password)
+                .addRole(1);
 
-        userWithoutUsername = new User().setFirstName(firstNameForDoubleSave).setLastName(lastName).setEmail(email)
-                .setPhoneNumber(phoneNumber).setPassword(password).addRole(1);
+        userWithoutUsername = new User()
+                .setFirstName(firstNameForDoubleSave)
+                .setLastName(lastName)
+                .setEmail(email)
+                .setPhoneNumber(phoneNumber)
+                .setPassword(password)
+                .addRole(1);
     }
 
     @Test
@@ -69,5 +88,53 @@ public class UserCollectionServiceTest {
         UserCollectionService userCollectionService = new UserCollectionService();
         int id = userCollectionService.save(userWithoutUsername);
         assertThat(id).isEqualTo(0);
+    }
+
+    @Test
+    public void valid_user_return_false_for_null_user() {
+        UserCollectionService userCollectionService = new UserCollectionService();
+        assertThat(userCollectionService.validUser(null)).isFalse();
+    }
+
+    @Test
+    public void valid_user_return_false_for_null_username() {
+        UserCollectionService userCollectionService = new UserCollectionService();
+        assertThat(userCollectionService.validUser(userWithoutUsername)).isFalse();
+    }
+
+    @Test
+    public void validate_username_return_false_when_given_null_username() {
+        UserCollectionService userCollectionService = new UserCollectionService();
+        assertThat(userCollectionService.validateUsername(null)).isFalse();
+    }
+
+    @Test
+    public void validate_username_return_false_when_given_empty_username() {
+        UserCollectionService userCollectionService = new UserCollectionService();
+        assertThat(userCollectionService.validateUsername("")).isFalse();
+    }
+
+    @Test
+    public void validate_username_return_false_when_given_blank_username() {
+        UserCollectionService userCollectionService = new UserCollectionService();
+        assertThat(userCollectionService.validateUsername("     ")).isFalse();
+    }
+
+    @Test
+    public void validate_username_return_true_when_given_valid_username() {
+        UserCollectionService userCollectionService = new UserCollectionService();
+        assertThat(userCollectionService.validateUsername(username)).isTrue();
+    }
+
+    @Test
+    public void validate_username_return_false_when_given_to_short_username() {
+        UserCollectionService userCollectionService = new UserCollectionService();
+        assertThat(userCollectionService.validateUsername(veryShortUsername)).isFalse();
+    }
+
+    @Test
+    public void validate_username_return_false_when_given_to_large_username() {
+        UserCollectionService userCollectionService = new UserCollectionService();
+        assertThat(userCollectionService.validateUsername(veryLargeUsername)).isFalse();
     }
 }
