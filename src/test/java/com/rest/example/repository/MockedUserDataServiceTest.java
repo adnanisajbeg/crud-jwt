@@ -5,6 +5,8 @@ import com.rest.example.model.User;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -16,47 +18,33 @@ public class MockedUserDataServiceTest {
 
     private User user;
     private User baseUser;
-    private User userForDoubleSave;
     private String firstName = "John";
-    private String firstNameForDoubleSave = "Smith";
     private String lastName = "Doe";
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
     private String password = "pass123456";
-    private String username = "john.doe";
-    private String baseUsername = "test.user";
-    private String usernameForDoubleSave = "smith.doe";
 
 
     @Before
     public void setup() {
         mockedUserDataService = new MockedUserDataService();
 
-        baseUser = new User()
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setEmail(email)
-                .setPhoneNumber(phoneNumber)
-                .setUsername(baseUsername)
-                .setPassword(password)
-                .addRole(1);
-
         user = new User()
                 .setFirstName(firstName)
                 .setLastName(lastName)
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
-                .setUsername(username)
-                .setPassword(password)
+                .setUsername(randomAlphabetic(18))
+                .setPassword(randomAlphanumeric(15))
                 .addRole(1);
 
-        userForDoubleSave = new User()
-                .setFirstName(firstNameForDoubleSave)
+        baseUser = new User()
+                .setFirstName(firstName)
                 .setLastName(lastName)
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
-                .setUsername(usernameForDoubleSave)
-                .setPassword(password)
+                .setUsername(randomAlphabetic(11))
+                .setPassword(randomAlphanumeric(24))
                 .addRole(1);
     }
 
@@ -75,7 +63,7 @@ public class MockedUserDataServiceTest {
     @Test
     public void save_another_user_returns_greater_id() {
         int firstUserId = mockedUserDataService.save(user);
-        assertThat(mockedUserDataService.save(userForDoubleSave)).isGreaterThan(firstUserId);
+        assertThat(mockedUserDataService.save(baseUser)).isGreaterThan(firstUserId);
     }
 
 }

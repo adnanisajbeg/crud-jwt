@@ -3,6 +3,8 @@ package com.rest.example.model;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -17,7 +19,6 @@ public class UserTest {
     private String lastNameForSecondUser = "Smith";
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
-    private String password = "pass123456";
     private int role_first = 1;
     private int role_two = 2;
     private int role_five = 5;
@@ -33,7 +34,8 @@ public class UserTest {
                 .setLastName(lastName)
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
-                .setPassword(password)
+                .setUsername(randomAlphabetic(10))
+                .setPassword(randomAlphanumeric(13))
                 .addRole(1);
 
         secondUser = new User()
@@ -41,7 +43,8 @@ public class UserTest {
                 .setLastName(lastNameForSecondUser)
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
-                .setPassword(password)
+                .setUsername(randomAlphabetic(22))
+                .setPassword(randomAlphanumeric(11))
                 .addRole(1);
     }
 
@@ -51,8 +54,8 @@ public class UserTest {
         assertThat(firstUser.toString())
                 .isNotNull()
                 .isNotBlank()
-                .isEqualTo("User{id=null, firstName='John', lastName='Doe', email='john.doe@gmail.com', "
-                        + "phoneNumber='12345678', username='null', password='*******', roles=[1]}");
+                .contains(firstName)
+                .contains(lastName);
     }
 
     @Test

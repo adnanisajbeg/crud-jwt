@@ -23,11 +23,11 @@ public class UserValidator {
             return false;
         }
 
-        if (username.length() > 2 && username.length() < 30) {
-            LOGGER.warn("Aborting saving new user, username length against the rules!");
-            return true;
+        if (username.length() < 3 || username.length() > 30) {
+            LOGGER.warn("Aborting saving new user, username length against the rules! username: {}", username);
+            return false;
         }
 
-        return false;
+        return true;
     }
 }

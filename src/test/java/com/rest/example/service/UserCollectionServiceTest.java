@@ -6,6 +6,8 @@ import com.rest.example.validator.UserValidator;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -16,16 +18,12 @@ public class UserCollectionServiceTest {
     UserCollectionService userCollectionService = new UserCollectionService();
 
     private User user;
-    private User userForDoubleSave;
     private User userWithoutUsername;
     private String firstName = "John";
     private String firstNameForDoubleSave = "Smith";
     private String lastName = "Doe";
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
-    private String password = "pass123456";
-    private String username = "john.doe";
-    private String usernameForDoubleSave = "smith.doe";
 
     @Before
     public void setup() {
@@ -37,17 +35,8 @@ public class UserCollectionServiceTest {
                 .setLastName(lastName)
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
-                .setUsername(username)
-                .setPassword(password)
-                .addRole(1);
-
-        userForDoubleSave = new User()
-                .setFirstName(firstNameForDoubleSave)
-                .setLastName(lastName)
-                .setEmail(email)
-                .setPhoneNumber(phoneNumber)
-                .setUsername(usernameForDoubleSave)
-                .setPassword(password)
+                .setUsername(randomAlphabetic(15))
+                .setPassword(randomAlphanumeric(20))
                 .addRole(1);
 
         userWithoutUsername = new User()
@@ -55,7 +44,7 @@ public class UserCollectionServiceTest {
                 .setLastName(lastName)
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
-                .setPassword(password)
+                .setPassword(randomAlphanumeric(22))
                 .addRole(1);
     }
 
@@ -78,8 +67,8 @@ public class UserCollectionServiceTest {
 
     @Test
     public void service_does_not_save_new_user_with_existing_username() {
-        int id = userCollectionService.save(userForDoubleSave);
-        int idAgain = userCollectionService.save(userForDoubleSave);
+        int id = userCollectionService.save(user);
+        int idAgain = userCollectionService.save(user);
         assertThat(id).isGreaterThan(0);
         assertThat(idAgain).isEqualTo(0);
     }

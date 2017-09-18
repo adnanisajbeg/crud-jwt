@@ -4,6 +4,8 @@ import com.rest.example.model.User;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -18,7 +20,6 @@ public class UserValidatorTest {
     private String lastName = "Doe";
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
-    private String password = "pass123456";
     private String username = "john.doe";
     private String veryShortUsername = "rr";
     private String veryLargeUsername = "ddsdasdasdasdasdasdaddsaasdasddasd";
@@ -32,12 +33,9 @@ public class UserValidatorTest {
                 .setLastName(lastName)
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
-                .setPassword(password)
+                .setPassword(randomAlphanumeric(20))
                 .addRole(1);
-
-
     }
-
 
     @Test
     public void validator_created() {
@@ -71,16 +69,16 @@ public class UserValidatorTest {
 
     @Test
     public void validate_username_return_true_when_given_valid_username() {
-        assertThat(userValidator.validateUsername(username)).isTrue();
+        assertThat(userValidator.validateUsername(randomAlphabetic(15))).isTrue();
     }
 
     @Test
     public void validate_username_return_false_when_given_to_short_username() {
-        assertThat(userValidator.validateUsername(veryShortUsername)).isFalse();
+        assertThat(userValidator.validateUsername(randomAlphabetic(2))).isFalse();
     }
 
     @Test
     public void validate_username_return_false_when_given_to_large_username() {
-        assertThat(userValidator.validateUsername(veryLargeUsername)).isFalse();
+        assertThat(userValidator.validateUsername(randomAlphabetic(35))).isFalse();
     }
 }

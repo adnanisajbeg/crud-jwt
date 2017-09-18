@@ -55,7 +55,7 @@ public class UserCollection_FT extends AbstractTest {
 
     @Test
     public void register_new_user_returns_header_with_link_to_user() {
-        HttpHeaders headers = restTemplate.postForEntity(userUrl, user2, User.class).getHeaders();
+        HttpHeaders headers = restTemplate.postForEntity(userUrl, userWithRandomUsername, User.class).getHeaders();
 
         assertThat(headers).isNotNull().isNotEmpty();
         assertThat(headers.get(LOCATION)).isNotNull().isNotEmpty().hasSize(1);
