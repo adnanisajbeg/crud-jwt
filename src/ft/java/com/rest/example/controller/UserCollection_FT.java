@@ -1,6 +1,5 @@
 package com.rest.example.controller;
 
-import com.rest.example.model.User;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +34,7 @@ public class UserCollection_FT extends AbstractTest {
     @Test
     @Ignore
     public void options_on_users_returns_correct_methods() {
-        Set<HttpMethod> allowedHttpMethodsForUsers = this.restTemplate.optionsForAllow(userUrl);
+        Set<HttpMethod> allowedHttpMethodsForUsers = this.restTemplate.optionsForAllow(USER_URL);
 
         assertThat(allowedHttpMethodsForUsers)
                 .isNotNull()
@@ -47,7 +46,7 @@ public class UserCollection_FT extends AbstractTest {
 
     @Test
     public void register_new_user_returns_correct_code() {
-        ResponseEntity<User> answer = restTemplate.postForEntity(userUrl, user, User.class);
+        ResponseEntity<String> answer = restTemplate.postForEntity(USER_URL, user, String.class);
 
         assertThat(answer).isNotNull();
         assertThat(answer.getStatusCode()).isEqualTo(CREATED);
@@ -55,7 +54,7 @@ public class UserCollection_FT extends AbstractTest {
 
     @Test
     public void register_new_user_returns_header_with_link_to_user() {
-        HttpHeaders headers = restTemplate.postForEntity(userUrl, userWithRandomUsername, User.class).getHeaders();
+        HttpHeaders headers = restTemplate.postForEntity(USER_URL, userWithRandomUsername, String.class).getHeaders();
 
         assertThat(headers).isNotNull().isNotEmpty();
         assertThat(headers.get(LOCATION)).isNotNull().isNotEmpty().hasSize(1);

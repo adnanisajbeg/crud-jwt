@@ -13,15 +13,18 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
  * @Created: 2017-09-18
  */
 public abstract class AbstractTest {
+    static String USER_URL = "/users";
+    static String INFO_URL = "/info";
+
     User user;
     User userWithRandomUsername;
     private String firstName = "John";
     private String lastName = "Doe";
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
+    String newPhoneNumber = "23333332";
     private String password = "pass123456";
     private String username = "john.doe";
-    String userUrl = "/users";
 
     @Autowired
     TestRestTemplate restTemplate;
