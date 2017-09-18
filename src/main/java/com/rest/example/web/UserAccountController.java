@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,8 +15,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.OPTIONS;
+import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 
 /**
  * @Author: Adnan Isajbegovic
@@ -41,7 +44,27 @@ public class UserAccountController {
         LOGGER.info("Geting user with id: {}", id);
         HttpHeaders headers = new HttpHeaders();
 
+        if (user != null) {
+            return ResponseEntity.ok().headers(headers).contentType(APPLICATION_JSON).body(user);
+        } else {
+            return ResponseEntity.noContent().headers(headers).build();
+        }
+    }
+
+    @RequestMapping(method = PATCH, consumes = {"application/json"}, produces = {"application/json"})
+    public ResponseEntity<User> updateUser(@PathVariable(USER_ID) Integer id,
+            @RequestBody User user) {
+        LOGGER.info("Updating user by id: {}, user: {}", id, user);
+        HttpHeaders headers = new HttpHeaders();
         return ResponseEntity.ok().headers(headers).contentType(APPLICATION_JSON).body(user);
+    }
+
+    @RequestMapping(method = DELETE, consumes = {"application/json"}, produces = {"application/json"})
+    public ResponseEntity<User> deleteUser(
+            @PathVariable(USER_ID) Integer id) {
+        LOGGER.info("Delete user by id: {}", id);
+        HttpHeaders headers = new HttpHeaders();
+        return ResponseEntity.noContent().headers(headers).build();
     }
 
     private Set<HttpMethod> getAllowedMethods() {

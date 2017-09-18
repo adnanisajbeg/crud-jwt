@@ -109,7 +109,7 @@ public class UserAccount_FT extends AbstractTest {
 
     @Test
     public void deleted_saved_user() {
-        String urlForUser = getUrlForUser(user);
+        String urlForUser = getUrlForUser(userWithRandomUsername);
         restTemplate.exchange(
                 urlForUser,
                 DELETE,
