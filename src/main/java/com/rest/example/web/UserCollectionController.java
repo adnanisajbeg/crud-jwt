@@ -39,7 +39,7 @@ public class UserCollectionController {
         return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_JSON).build();
     }
 
-    @RequestMapping(method = POST, produces = {"application/json"})
+    @RequestMapping(method = POST, consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<Object> saveNewUser(
             @RequestBody User newUser) {
         LOGGER.info("Saving new user: {}", newUser);
