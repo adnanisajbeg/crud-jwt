@@ -1,5 +1,6 @@
 package com.rest.example.service;
 
+import com.rest.example.db.UserDataService;
 import com.rest.example.model.User;
 import com.rest.example.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,12 @@ public class UserCollectionService {
     @Autowired
     UserValidator userValidator;
 
+    @Autowired
+    UserDataService userDataService;
+
     public int save(User user) {
         if (userValidator.newUserIsValid(user)) {
-            return 1;
+            return userDataService.save(user);
         }
 
         return 0;

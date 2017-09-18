@@ -1,5 +1,6 @@
 package com.rest.example.service;
 
+import com.rest.example.db.repository.MockedUserDataService;
 import com.rest.example.model.User;
 import com.rest.example.validator.UserValidator;
 import org.junit.Before;
@@ -28,7 +29,8 @@ public class UserCollectionServiceTest {
 
     @Before
     public void setup() {
-        userCollectionService.userValidator = new UserValidator();
+        userCollectionService.userValidator = new UserValidator();  // TODO: mock this
+        userCollectionService.userDataService = new MockedUserDataService();    // TODO: mock this
 
         user = new User()
                 .setFirstName(firstName)

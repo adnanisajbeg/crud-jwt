@@ -13,41 +13,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserValidatorTest {
     UserValidator userValidator;
 
-    private User user;
-    private User userForDoubleSave;
     private User userWithoutUsername;
-    private String firstName = "John";
     private String firstNameForDoubleSave = "Smith";
     private String lastName = "Doe";
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
     private String password = "pass123456";
     private String username = "john.doe";
-    private String usernameForDoubleSave = "smith.doe";
     private String veryShortUsername = "rr";
     private String veryLargeUsername = "ddsdasdasdasdasdasdaddsaasdasddasd";
 
     @Before
     public void setup() {
         userValidator = new UserValidator();
-
-        user = new User()
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setEmail(email)
-                .setPhoneNumber(phoneNumber)
-                .setUsername(username)
-                .setPassword(password)
-                .addRole(1);
-
-        userForDoubleSave = new User()
-                .setFirstName(firstNameForDoubleSave)
-                .setLastName(lastName)
-                .setEmail(email)
-                .setPhoneNumber(phoneNumber)
-                .setUsername(usernameForDoubleSave)
-                .setPassword(password)
-                .addRole(1);
 
         userWithoutUsername = new User()
                 .setFirstName(firstNameForDoubleSave)
@@ -56,6 +34,8 @@ public class UserValidatorTest {
                 .setPhoneNumber(phoneNumber)
                 .setPassword(password)
                 .addRole(1);
+
+
     }
 
 
