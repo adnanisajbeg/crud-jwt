@@ -31,8 +31,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserCollection_FT extends AbstractTest {
     // TODO: DELETE OR MODIFY
-    @Test
     @Ignore
+    @Test
     public void options_on_users_returns_correct_methods() {
         Set<HttpMethod> allowedHttpMethodsForUsers = this.restTemplate.optionsForAllow(USER_URL);
 

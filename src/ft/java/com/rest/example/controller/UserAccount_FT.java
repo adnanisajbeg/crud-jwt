@@ -21,7 +21,6 @@ import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.HEAD;
 import static org.springframework.http.HttpMethod.OPTIONS;
 import static org.springframework.http.HttpMethod.PATCH;
-import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.http.HttpMethod.TRACE;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -43,22 +42,33 @@ public class UserAccount_FT extends AbstractTest {
         assertThat(allowedHttpMethodsForUsers)
                 .isNotNull()
                 .isNotEmpty()
-                .contains(POST).contains(OPTIONS)
-                .doesNotContain(GET).doesNotContain(HEAD).doesNotContain(PUT)
-                .doesNotContain(PATCH).doesNotContain(DELETE).doesNotContain(TRACE);
+                .contains(OPTIONS).contains(GET).contains(PATCH).contains(DELETE)
+                .doesNotContain(HEAD).doesNotContain(PUT).doesNotContain(TRACE);
     }
 
     @Test
     public void get_user_account_data_returns_correct_code() {
-        ResponseEntity<User> getUserResponse = restTemplate.exchange(
+        ResponseEntity<User> response = restTemplate.exchange(
                 getUrlForUser(userWithRandomUsername),
                 GET,
                 createHttpEntityForGet(),
                 User.class
         );
 
-        assertThat(getUserResponse).isNotNull();
-        assertThat(getUserResponse.getBody()).isEqualToComparingFieldByField(userWithRandomUsername);
+        assertThat(response.getStatusCode()).isEqualTo(OK);
+    }
+
+    @Test
+    public void get_user_account_data_returns_correct_user() {
+        ResponseEntity<User> response = restTemplate.exchange(
+                getUrlForUser(userWithRandomUsername),
+                GET,
+                createHttpEntityForGet(),
+                User.class
+        );
+
+        assertThat(response).isNotNull();
+        assertThat(response.getBody()).isEqualToComparingFieldByField(userWithRandomUsername);
     }
 
     @Test

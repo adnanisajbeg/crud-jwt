@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.springframework.web.bind.annotation.RequestMethod.OPTIONS;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -34,7 +37,7 @@ public class UserCollectionController {
     @RequestMapping(method = OPTIONS, consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<Object> getOptions() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Allow", "POST");
+        headers.setAllow(getAllowedMethods());
 
         return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_JSON).build();
     }
@@ -60,5 +63,12 @@ public class UserCollectionController {
 
     private URI createURI(int newUserId) throws URISyntaxException {
         return new URI("/users/" + newUserId);
+    }
+
+    private Set<HttpMethod> getAllowedMethods() {
+        Set<HttpMethod> allowedMethods = new HashSet<>(4);
+        allowedMethods.add(HttpMethod.OPTIONS);
+        allowedMethods.add(HttpMethod.POST);
+        return allowedMethods;
     }
 }
