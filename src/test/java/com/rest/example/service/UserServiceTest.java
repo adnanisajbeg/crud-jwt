@@ -14,8 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @Author: Adnan Isajbegovic
  * @Created: 2017-09-17
  */
-public class UserCollectionServiceTest {
-    UserCollectionService userCollectionService = new UserCollectionService();
+public class UserServiceTest {
+    UserService userService = new UserService();
 
     private User user;
     private User userWithoutUsername;
@@ -27,8 +27,8 @@ public class UserCollectionServiceTest {
 
     @Before
     public void setup() {
-        userCollectionService.userValidator = new UserValidator();  // TODO: mock this
-        userCollectionService.userDataService = new MockedUserDataService();    // TODO: mock this
+        userService.userValidator = new UserValidator();  // TODO: mock this
+        userService.userDataService = new MockedUserDataService();    // TODO: mock this
 
         user = new User()
                 .setFirstName(firstName)
@@ -50,32 +50,57 @@ public class UserCollectionServiceTest {
 
     @Test
     public void service_creation() {
-        assertThat(userCollectionService).isNotNull();
+        assertThat(userService).isNotNull();
     }
 
     @Test
     public void service_saves_user() {
-        int id = userCollectionService.save(user);
+        int id = userService.saveUser(user);
         assertThat(id).isGreaterThan(0);
     }
 
     @Test
     public void service_does_not_save_null_user() {
-        int id = userCollectionService.save(null);
+        int id = userService.saveUser(null);
         assertThat(id).isEqualTo(0);
     }
 
     @Test
     public void service_does_not_save_new_user_with_existing_username() {
-        int id = userCollectionService.save(user);
-        int idAgain = userCollectionService.save(user);
+        int id = userService.saveUser(user);
+        int idAgain = userService.saveUser(user);
         assertThat(id).isGreaterThan(0);
         assertThat(idAgain).isEqualTo(0);
     }
 
     @Test
     public void service_does_not_save_user_without_username() {
-        int id = userCollectionService.save(userWithoutUsername);
+        int id = userService.saveUser(userWithoutUsername);
         assertThat(id).isEqualTo(0);
+    }
+
+    @Test
+    public void service_returns_correct_user() {
+        int userId = userService.saveUser(user);
+        User savedUser = userService.getUser(userId);
+        assertThat(savedUser).isNotNull().isEqualToComparingFieldByField(user);
+    }
+
+    @Test
+    public void delete_saved_user_returns_true() {
+        int userId = userService.saveUser(user);
+        boolean deleted = userService.deleteUser(userId);
+        assertThat(deleted).isTrue();
+    }
+
+    @Test
+    public void delete_zero_user_returns_false() {
+        assertThat(userService.deleteUser(0)).isFalse();
+    }
+
+    @Test
+    public void delete_nonexisting_user_returns_false() {
+        int userId = userService.saveUser(user);
+        assertThat(userService.deleteUser(++userId)).isFalse();
     }
 }

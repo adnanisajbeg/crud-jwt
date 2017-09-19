@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @Author: Adnan Isajbegovic
  * @Created: 2017-09-17
  */
-public class UserCollectionService {
+public class UserService {
 
     @Autowired
     UserValidator userValidator;
@@ -17,11 +17,28 @@ public class UserCollectionService {
     @Autowired
     UserDataService userDataService;
 
-    public int save(User user) {
+    public int saveUser(User user) {
         if (userValidator.newUserIsValid(user)) {
             return userDataService.save(user);
         }
 
         return 0;
     }
+
+    public User getUser(int userId) {
+        if (userId > 0) {
+            return userDataService.getUserById(userId);
+        }
+
+        return null;
+    }
+
+    public boolean deleteUser(int userId) {
+        if (userId > 0) {
+            return userDataService.deleteUserById(userId);
+        }
+
+        return false;
+    }
+
 }

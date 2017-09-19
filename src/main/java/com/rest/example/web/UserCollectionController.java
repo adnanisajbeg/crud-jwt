@@ -1,7 +1,7 @@
 package com.rest.example.web;
 
 import com.rest.example.model.User;
-import com.rest.example.service.UserCollectionService;
+import com.rest.example.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class UserCollectionController {
     private static Logger LOGGER = LoggerFactory.getLogger(UserCollectionController.class);
 
     @Autowired
-    UserCollectionService userCollectionService;
+    UserService userService;
 
     @RequestMapping(method = OPTIONS, consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<Object> getOptions() {
@@ -46,7 +46,7 @@ public class UserCollectionController {
     public ResponseEntity<Object> saveNewUser(
             @RequestBody User newUser) {
         LOGGER.info("Saving new user: {}", newUser);
-        int newUserId = userCollectionService.save(newUser);
+        int newUserId = userService.saveUser(newUser);
 
         if (newUserId > 0) {
             HttpHeaders headers = new HttpHeaders();
@@ -57,7 +57,7 @@ public class UserCollectionController {
             }
         }
 
-        // TODO: Find which code to return when save failed
+        // TODO: Find which code to return when saveUser failed
         return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).build();
     }
 

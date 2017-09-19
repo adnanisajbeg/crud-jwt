@@ -22,8 +22,7 @@ public class MockedUserDataServiceTest {
     private String lastName = "Doe";
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
-    private String password = "pass123456";
-
+    private int someIdToBeDeleted = 5;
 
     @Before
     public void setup() {
@@ -66,4 +65,28 @@ public class MockedUserDataServiceTest {
         assertThat(mockedUserDataService.save(baseUser)).isGreaterThan(firstUserId);
     }
 
+    @Test
+    public void get_user_by_id_returns_correct_user() {
+        int savedUserId = mockedUserDataService.save(user);
+        assertThat(mockedUserDataService.getUserById(savedUserId)).isNotNull().isEqualToComparingFieldByField(user);
+    }
+
+    @Test
+    public void delete_correct_user_returns_true() {
+        int savedUserId = mockedUserDataService.save(user);
+        assertThat(mockedUserDataService.deleteUserById(savedUserId)).isTrue();
+    }
+
+    @Test
+    public void delete_user_can_not_be_retrieved() {
+        int savedUserId = mockedUserDataService.save(user);
+        mockedUserDataService.deleteUserById(savedUserId);
+        assertThat(mockedUserDataService.getUserById(savedUserId)).isNull();
+    }
+
+    @Test
+    public void delete_nonexisting_user_returns_false() {
+        mockedUserDataService.deleteUserById(someIdToBeDeleted);
+        assertThat(mockedUserDataService.deleteUserById(someIdToBeDeleted)).isFalse();
+    }
 }

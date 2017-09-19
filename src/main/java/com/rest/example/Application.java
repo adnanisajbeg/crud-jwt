@@ -2,7 +2,7 @@ package com.rest.example;
 
 import com.rest.example.db.UserDataService;
 import com.rest.example.db.repository.MockedUserDataService;
-import com.rest.example.service.UserCollectionService;
+import com.rest.example.service.UserService;
 import com.rest.example.validator.UserValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +29,8 @@ public class Application {
     }
 
     @Bean
-    public UserCollectionService getUserCollectionService() {
-        return new UserCollectionService();
+    public UserService getUserCollectionService() {
+        return new UserService();
     }
 
     @Bean

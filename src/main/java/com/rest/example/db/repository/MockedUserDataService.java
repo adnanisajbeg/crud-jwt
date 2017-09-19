@@ -31,11 +31,32 @@ public class MockedUserDataService implements UserDataService {
         return 0;
     }
 
+    @Override
+    public User getUserById(int id) {
+        return USER_CACHE.get(id);
+    }
+
     int saveUserToCache(User user) {
         USERNAME_CACHE.add(user.getUsername());
         USER_ID_GENERATOR++;
         user.setId(USER_ID_GENERATOR);
         USER_CACHE.put(user.getId(), user);
         return user.getId();
+    }
+
+    @Override
+    public boolean deleteUserById(int id) {
+        User user = USER_CACHE.get(id);
+        if (user == null) {
+            return false;
+        }
+        
+        deleteUser(user);
+        return true;
+    }
+
+    private void deleteUser(User user) {
+        USERNAME_CACHE.remove(user.getUsername());
+        USER_CACHE.remove(user.getId());
     }
 }

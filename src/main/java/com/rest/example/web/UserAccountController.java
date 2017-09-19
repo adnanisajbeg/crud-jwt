@@ -1,8 +1,10 @@
 package com.rest.example.web;
 
 import com.rest.example.model.User;
+import com.rest.example.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,9 @@ public class UserAccountController {
 
     private static final String USER_ID = "id";
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(method = OPTIONS, consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<Object> getOptions() {
         HttpHeaders headers = new HttpHeaders();
@@ -40,8 +45,10 @@ public class UserAccountController {
 
     @RequestMapping(method = GET, consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<User> getUser(@PathVariable(USER_ID) Integer id) {
-        User user = new User().setFirstName("Test"); // TODO: get user from db!
-        LOGGER.info("Geting user with id: {}", id);
+        LOGGER.debug("Extracting user with id: {}", id);
+        User user = userService.getUser(id);
+        LOGGER.debug("Extracted user with id: {}", user);
+
         HttpHeaders headers = new HttpHeaders();
 
         if (user != null) {
@@ -64,7 +71,12 @@ public class UserAccountController {
             @PathVariable(USER_ID) Integer id) {
         LOGGER.info("Delete user by id: {}", id);
         HttpHeaders headers = new HttpHeaders();
-        return ResponseEntity.noContent().headers(headers).build();
+        boolean deleted = userService.deleteUser(id);
+        if (deleted) {
+            return ResponseEntity.noContent().headers(headers).build();
+        } else {
+            return ResponseEntity.notFound().headers(headers).build();
+        }
     }
 
     private Set<HttpMethod> getAllowedMethods() {
