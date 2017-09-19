@@ -20,7 +20,6 @@ public class UserValidatorTest {
     private String lastName = "Doe";
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
-    private String username = "john.doe";
 
     @Before
     public void setup() {

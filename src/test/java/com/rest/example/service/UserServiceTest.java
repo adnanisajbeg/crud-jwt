@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @Created: 2017-09-17
  */
 public class UserServiceTest {
-    UserService userService = new UserService();
+    private UserService userService;
 
     private User user;
     private User userWithoutUsername;
@@ -28,6 +28,7 @@ public class UserServiceTest {
 
     @Before
     public void setup() {
+        userService = new UserService();
         userService.userValidator = new UserValidator();  // TODO: mock this
         userService.userDataService = new MockedUserDataService();    // TODO: mock this
 

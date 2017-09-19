@@ -1,6 +1,5 @@
-package com.rest.example.repository;
+package com.rest.example.db.repository;
 
-import com.rest.example.db.repository.MockedUserDataService;
 import com.rest.example.model.User;
 import org.junit.Before;
 import org.junit.Test;

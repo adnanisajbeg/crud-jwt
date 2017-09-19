@@ -1,13 +1,18 @@
-package com.rest.example.model;
+package com.rest.example.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  * @Author: Adnan Isajbegovic
- * @Created: 2017-09-16
+ * @Created: 2017-09-19
  */
-public class User {
+@Entity
+public class UserDAO {
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
     private String firstName;
     private String lastName;
@@ -15,21 +20,21 @@ public class User {
     private String phoneNumber;
     private String username;
     private String password;
-    private Set<Integer> roles = new HashSet<>(5);
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public UserDAO setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public User setFirstName(String firstName) {
+    public UserDAO setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -38,7 +43,7 @@ public class User {
         return lastName;
     }
 
-    public User setLastName(String lastName) {
+    public UserDAO setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
@@ -47,7 +52,7 @@ public class User {
         return email;
     }
 
-    public User setEmail(String email) {
+    public UserDAO setEmail(String email) {
         this.email = email;
         return this;
     }
@@ -56,7 +61,7 @@ public class User {
         return phoneNumber;
     }
 
-    public User setPhoneNumber(String phoneNumber) {
+    public UserDAO setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
     }
@@ -65,7 +70,7 @@ public class User {
         return username;
     }
 
-    public User setUsername(String username) {
+    public UserDAO setUsername(String username) {
         this.username = username;
         return this;
     }
@@ -74,22 +79,8 @@ public class User {
         return password;
     }
 
-    public User setPassword(String password) {
+    public UserDAO setPassword(String password) {
         this.password = password;
-        return this;
-    }
-
-    public boolean containsRole(int role) {
-        return roles.contains(role);
-    }
-
-    public User addRole(int role) {
-        roles.add(role);
-        return this;
-    }
-
-    public User deleteRole(int role) {
-        roles.remove(role);
         return this;
     }
 
@@ -100,23 +91,21 @@ public class User {
         if (o == null || getClass() != o.getClass())
             return false;
 
-        User user = (User) o;
+        UserDAO userDAO = (UserDAO) o;
 
-        if (id != null ? !id.equals(user.id) : user.id != null)
+        if (id != null ? !id.equals(userDAO.id) : userDAO.id != null)
             return false;
-        if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null)
+        if (firstName != null ? !firstName.equals(userDAO.firstName) : userDAO.firstName != null)
             return false;
-        if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null)
+        if (lastName != null ? !lastName.equals(userDAO.lastName) : userDAO.lastName != null)
             return false;
-        if (email != null ? !email.equals(user.email) : user.email != null)
+        if (email != null ? !email.equals(userDAO.email) : userDAO.email != null)
             return false;
-        if (phoneNumber != null ? !phoneNumber.equals(user.phoneNumber) : user.phoneNumber != null)
+        if (phoneNumber != null ? !phoneNumber.equals(userDAO.phoneNumber) : userDAO.phoneNumber != null)
             return false;
-        if (username != null ? !username.equals(user.username) : user.username != null)
+        if (username != null ? !username.equals(userDAO.username) : userDAO.username != null)
             return false;
-        if (password != null ? !password.equals(user.password) : user.password != null)
-            return false;
-        return roles != null ? roles.equals(user.roles) : user.roles == null;
+        return password != null ? password.equals(userDAO.password) : userDAO.password == null;
     }
 
     @Override
@@ -128,7 +117,6 @@ public class User {
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (roles != null ? roles.hashCode() : 0);
         return result;
     }
 
@@ -136,6 +124,6 @@ public class User {
     public String toString() {
         return "UserDAO{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
                 + ", email='" + email + '\'' + ", phoneNumber='" + phoneNumber + '\'' + ", username='" + username + '\''
-                + ", password=\'*******\'" + ", roles=" + roles + '}';
+                + ", password='********" + '\'' + '}';
     }
 }
