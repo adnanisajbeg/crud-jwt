@@ -24,6 +24,7 @@ public class UserServiceTest {
     private String lastName = "Doe";
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
+    private String newEmail = "doe.john@hotmail.com";
 
     @Before
     public void setup() {
@@ -55,52 +56,80 @@ public class UserServiceTest {
 
     @Test
     public void service_saves_user() {
-        int id = userService.saveUser(user);
+        int id = userService.save(user);
         assertThat(id).isGreaterThan(0);
     }
 
     @Test
     public void service_does_not_save_null_user() {
-        int id = userService.saveUser(null);
+        int id = userService.save(null);
         assertThat(id).isEqualTo(0);
     }
 
     @Test
     public void service_does_not_save_new_user_with_existing_username() {
-        int id = userService.saveUser(user);
-        int idAgain = userService.saveUser(user);
+        int id = userService.save(user);
+        int idAgain = userService.save(user);
         assertThat(id).isGreaterThan(0);
         assertThat(idAgain).isEqualTo(0);
     }
 
     @Test
     public void service_does_not_save_user_without_username() {
-        int id = userService.saveUser(userWithoutUsername);
+        int id = userService.save(userWithoutUsername);
         assertThat(id).isEqualTo(0);
     }
 
     @Test
     public void service_returns_correct_user() {
-        int userId = userService.saveUser(user);
-        User savedUser = userService.getUser(userId);
+        int userId = userService.save(user);
+        User savedUser = userService.get(userId);
         assertThat(savedUser).isNotNull().isEqualToComparingFieldByField(user);
     }
 
     @Test
     public void delete_saved_user_returns_true() {
-        int userId = userService.saveUser(user);
-        boolean deleted = userService.deleteUser(userId);
+        int userId = userService.save(user);
+        boolean deleted = userService.delete(userId);
         assertThat(deleted).isTrue();
     }
 
     @Test
     public void delete_zero_user_returns_false() {
-        assertThat(userService.deleteUser(0)).isFalse();
+        assertThat(userService.delete(0)).isFalse();
     }
 
     @Test
     public void delete_nonexisting_user_returns_false() {
-        int userId = userService.saveUser(user);
-        assertThat(userService.deleteUser(++userId)).isFalse();
+        int userId = userService.save(user);
+        assertThat(userService.delete(++userId)).isFalse();
+    }
+
+    @Test
+    public void update_user_returns_true() {
+        int savedUserId = userService.save(user);
+        user.setEmail(newEmail);
+        assertThat(userService.update(savedUserId, user)).isTrue();
+    }
+
+    @Test
+    public void update_user_correctly() {
+        int savedUserId = userService.save(user);
+        user.setEmail(newEmail);
+        assertThat(userService.update(savedUserId, user)).isTrue();
+        User user = userService.get(savedUserId);
+        assertThat(user).isNotNull();
+        assertThat(user.getEmail()).isEqualTo(newEmail);
+    }
+
+    @Test
+    public void update_zero_id_returns_false() {
+        assertThat(userService.update(0, user)).isFalse();
+    }
+
+    @Test
+    public void update_nonexisting_user_returns_false() {
+        int savedUserId = userService.save(user);
+        assertThat(userService.update(++savedUserId, user)).isFalse();
     }
 }

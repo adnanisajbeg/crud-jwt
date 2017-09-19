@@ -46,7 +46,7 @@ public class UserCollectionController {
     public ResponseEntity<Object> saveNewUser(
             @RequestBody User newUser) {
         LOGGER.info("Saving new user: {}", newUser);
-        int newUserId = userService.saveUser(newUser);
+        int newUserId = userService.save(newUser);
 
         if (newUserId > 0) {
             HttpHeaders headers = new HttpHeaders();
@@ -57,7 +57,7 @@ public class UserCollectionController {
             }
         }
 
-        // TODO: Find which code to return when saveUser failed
+        // TODO: Find which code to return when save failed
         return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).build();
     }
 

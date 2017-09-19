@@ -10,11 +10,15 @@ import org.slf4j.LoggerFactory;
  */
 public class UserValidator {
     private static Logger LOGGER = LoggerFactory.getLogger(UserValidator.class);
-    public boolean newUserIsValid(User user) {
+    public boolean userIsValid(User user) {
         if (user == null || !validateUsername(user.getUsername())) {
             return false;
         }
         return true;
+    }
+
+    public boolean validateUpdate(int userId, User user) {
+        return userId > 0 && userIsValid(user);
     }
 
     boolean validateUsername(String username) {

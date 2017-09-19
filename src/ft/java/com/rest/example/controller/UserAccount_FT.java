@@ -140,7 +140,6 @@ public class UserAccount_FT extends AbstractTest {
 
         assertThat(secondTryToDeleteUser).isNotNull();
         assertThat(secondTryToDeleteUser.getStatusCode()).isEqualTo(NOT_FOUND);
-
     }
 
     private ResponseEntity<Object> updateUsersPhoneNumber(User user, String userUrl, String newPhoneNumber) {

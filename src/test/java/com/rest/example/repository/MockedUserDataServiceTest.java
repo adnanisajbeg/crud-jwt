@@ -23,6 +23,7 @@ public class MockedUserDataServiceTest {
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
     private int someIdToBeDeleted = 5;
+    private String newPhoneNumber = "33232322";
 
     @Before
     public void setup() {
@@ -88,5 +89,22 @@ public class MockedUserDataServiceTest {
     public void delete_nonexisting_user_returns_false() {
         mockedUserDataService.deleteUserById(someIdToBeDeleted);
         assertThat(mockedUserDataService.deleteUserById(someIdToBeDeleted)).isFalse();
+    }
+
+    @Test
+    public void update_user_returns_true() {
+        int savedUserId = mockedUserDataService.save(user);
+        User updatedUser = user.setPassword(randomAlphanumeric(7)).setPhoneNumber(newPhoneNumber);
+        assertThat(mockedUserDataService.update(savedUserId, user)).isTrue();
+    }
+
+    @Test
+    public void update_user_correctly() {
+        int savedUserId = mockedUserDataService.save(user);
+        User updatedUser = user.setPassword(randomAlphanumeric(7)).setPhoneNumber(newPhoneNumber);
+        mockedUserDataService.update(savedUserId, user);
+        User sameUser = mockedUserDataService.getUserById(savedUserId);
+        assertThat(sameUser).isNotNull();
+        assertThat(sameUser.getPhoneNumber()).isEqualTo(newPhoneNumber);
     }
 }

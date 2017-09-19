@@ -55,6 +55,26 @@ public class MockedUserDataService implements UserDataService {
         return true;
     }
 
+    @Override
+    public boolean update(int id, User user) {
+        if (id < 1 || id > USER_ID_GENERATOR || user == null) {
+            return false;
+        }
+
+        if (USER_CACHE.containsKey(id)) {
+            USER_CACHE.put(id, user);
+
+            String username = user.getUsername();
+            if (!USERNAME_CACHE.contains(username)) {
+                USERNAME_CACHE.add(username);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     private void deleteUser(User user) {
         USERNAME_CACHE.remove(user.getUsername());
         USER_CACHE.remove(user.getId());

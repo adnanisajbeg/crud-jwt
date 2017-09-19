@@ -46,7 +46,7 @@ public class UserAccountController {
     @RequestMapping(method = GET, consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<User> getUser(@PathVariable(USER_ID) Integer id) {
         LOGGER.debug("Extracting user with id: {}", id);
-        User user = userService.getUser(id);
+        User user = userService.get(id);
         LOGGER.debug("Extracted user with id: {}", user);
 
         HttpHeaders headers = new HttpHeaders();
@@ -61,9 +61,14 @@ public class UserAccountController {
     @RequestMapping(method = PATCH, consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<User> updateUser(@PathVariable(USER_ID) Integer id,
             @RequestBody User user) {
-        LOGGER.info("Updating user by id: {}, user: {}", id, user);
-        HttpHeaders headers = new HttpHeaders();
-        return ResponseEntity.ok().headers(headers).contentType(APPLICATION_JSON).body(user);
+        LOGGER.debug("Updating user by id: {}, user: {}", id, user);
+        boolean updated = userService.update(id, user);
+        if (updated) {
+            return ResponseEntity.ok().build();
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @RequestMapping(method = DELETE, consumes = {"application/json"}, produces = {"application/json"})
@@ -71,7 +76,7 @@ public class UserAccountController {
             @PathVariable(USER_ID) Integer id) {
         LOGGER.info("Delete user by id: {}", id);
         HttpHeaders headers = new HttpHeaders();
-        boolean deleted = userService.deleteUser(id);
+        boolean deleted = userService.delete(id);
         if (deleted) {
             return ResponseEntity.noContent().headers(headers).build();
         } else {

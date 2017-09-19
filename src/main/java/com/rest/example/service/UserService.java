@@ -17,15 +17,15 @@ public class UserService {
     @Autowired
     UserDataService userDataService;
 
-    public int saveUser(User user) {
-        if (userValidator.newUserIsValid(user)) {
+    public int save(User user) {
+        if (userValidator.userIsValid(user)) {
             return userDataService.save(user);
         }
 
         return 0;
     }
 
-    public User getUser(int userId) {
+    public User get(int userId) {
         if (userId > 0) {
             return userDataService.getUserById(userId);
         }
@@ -33,9 +33,18 @@ public class UserService {
         return null;
     }
 
-    public boolean deleteUser(int userId) {
+    public boolean delete(int userId) {
         if (userId > 0) {
             return userDataService.deleteUserById(userId);
+        }
+
+        return false;
+    }
+
+    public boolean update(int userId, User user) {
+        if (userValidator.validateUpdate(userId, user)) {   // TODO: move to validator
+            user.setId(userId);
+            return userDataService.update(userId, user);
         }
 
         return false;

@@ -21,8 +21,6 @@ public class UserValidatorTest {
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
     private String username = "john.doe";
-    private String veryShortUsername = "rr";
-    private String veryLargeUsername = "ddsdasdasdasdasdasdaddsaasdasddasd";
 
     @Before
     public void setup() {
@@ -44,12 +42,12 @@ public class UserValidatorTest {
 
     @Test
     public void return_false_when_user_is_null() {
-        assertThat(userValidator.newUserIsValid(null)).isFalse();
+        assertThat(userValidator.userIsValid(null)).isFalse();
     }
 
     @Test
     public void return_false_for_null_username() {
-        assertThat(userValidator.newUserIsValid(userWithoutUsername)).isFalse();
+        assertThat(userValidator.userIsValid(userWithoutUsername)).isFalse();
     }
 
     @Test
@@ -80,5 +78,25 @@ public class UserValidatorTest {
     @Test
     public void validate_username_return_false_when_given_to_large_username() {
         assertThat(userValidator.validateUsername(randomAlphabetic(35))).isFalse();
+    }
+
+    @Test
+    public void validate_update_when_id_is_zero_returns_false() {
+        assertThat(userValidator.validateUpdate(0, new User().setUsername(randomAlphabetic(10)))).isFalse();
+    }
+
+    @Test
+    public void validate_update_returns_true_for_valid_input() {
+        assertThat(userValidator.validateUpdate(12, new User().setUsername(randomAlphabetic(11)))).isTrue();
+    }
+
+    @Test
+    public void validate_update_returns_false_when_username_is_not_present() {
+        assertThat(userValidator.validateUpdate(12, new User())).isFalse();
+    }
+
+    @Test
+    public void validate_update_returns_false_when_user_is_null() {
+        assertThat(userValidator.validateUpdate(12, null)).isFalse();
     }
 }

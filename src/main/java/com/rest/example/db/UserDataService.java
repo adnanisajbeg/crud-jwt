@@ -10,4 +10,5 @@ public interface UserDataService {
     int save(User user);
     User getUserById(int id);
     boolean deleteUserById(int id);
+    boolean update(int id, User user);
 }
