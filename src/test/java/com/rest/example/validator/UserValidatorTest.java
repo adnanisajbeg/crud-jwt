@@ -1,5 +1,6 @@
 package com.rest.example.validator;
 
+import com.rest.example.entity.UserDAO;
 import com.rest.example.model.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -97,5 +98,20 @@ public class UserValidatorTest {
     @Test
     public void validate_update_returns_false_when_user_is_null() {
         assertThat(userValidator.validateUpdate(12, null)).isFalse();
+    }
+
+    @Test
+    public void validate_user_dao_returns_true_when_given_valid_user_dao() {
+        assertThat(userValidator.userDAOIsValid(new UserDAO().setUsername(randomAlphabetic(5)))).isTrue();
+    }
+
+    @Test
+    public void validate_user_dao_returns_false_when_given_user_dao_without_username() {
+        assertThat(userValidator.userDAOIsValid(new UserDAO())).isFalse();
+    }
+
+    @Test
+    public void validate_user_dao_returns_false_when_given_null() {
+        assertThat(userValidator.userDAOIsValid(null)).isFalse();
     }
 }

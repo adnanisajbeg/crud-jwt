@@ -67,4 +67,15 @@ public class UserConverterTest {
     public void converter_returns_null_when_given_null_user() {
         assertThat(userConverter.convertUserToDAO(null)).isNull();
     }
+
+    @Test
+    public void converter_returns_null_when_given_user_dao_without_username() {
+        assertThat(userConverter.convertDAOToUser(new UserDAO())).isNull();
+    }
+
+    @Test
+    public void converter_returns_user_when_given_user_dao() {
+        UserDAO userDAO = userConverter.convertUserToDAO(user);
+        assertThat(userConverter.convertDAOToUser(userDAO)).isNotNull();
+    }
 }

@@ -40,11 +40,6 @@ public class Application {
         return new UserService();
     }
 
-//    @Bean
-//    public UserDataService userDataService() {
-//        return new MockedUserDataService();
-//    }
-
     @Bean
     public UserDataService userDataService() {
         return new MySQLDataService();

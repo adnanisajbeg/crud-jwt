@@ -1,4 +1,4 @@
-package com.rest.example.controller;
+package com.rest.example;
 
 import com.rest.example.model.User;
 import org.junit.Before;

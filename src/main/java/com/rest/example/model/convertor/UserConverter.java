@@ -27,4 +27,19 @@ public class UserConverter {
 
         return null;
     }
+
+    public User convertDAOToUser(UserDAO userDAO) {
+        if (userValidator.userDAOIsValid(userDAO)) {
+            return new User()
+                    .setEmail(userDAO.getEmail())
+                    .setFirstName(userDAO.getFirstName())
+                    .setLastName(userDAO.getLastName())
+                    .setPassword(userDAO.getPassword())
+                    .setUsername(userDAO.getUsername())
+                    .setPhoneNumber(userDAO.getPhoneNumber())
+                    ;
+        }
+
+        return null;
+    }
 }

@@ -1,17 +1,17 @@
-package com.rest.example.controller;
+package com.rest.example;
 
-import org.junit.Ignore;
+import com.rest.example.model.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Set;
-
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpHeaders.ALLOW;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
@@ -22,6 +22,7 @@ import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.http.HttpMethod.TRACE;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 /**
  * @Author: Adnan Isajbegovic
@@ -30,18 +31,23 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserCollection_FT extends AbstractTest {
-    // TODO: DELETE OR MODIFY
-    @Ignore
     @Test
     public void options_on_users_returns_correct_methods() {
-        Set<HttpMethod> allowedHttpMethodsForUsers = this.restTemplate.optionsForAllow(USER_URL);
+        ResponseEntity<User> response = restTemplate.exchange(
+                USER_URL,
+                OPTIONS,
+                createHttpEntityForGet(),
+                User.class
+        );
 
-        assertThat(allowedHttpMethodsForUsers)
+        assertThat(response.getHeaders().get(ALLOW))
                 .isNotNull()
-                .isNotEmpty()
-                .contains(POST).contains(OPTIONS)
-                .doesNotContain(GET).doesNotContain(HEAD).doesNotContain(PUT)
-                .doesNotContain(PATCH).doesNotContain(DELETE).doesNotContain(TRACE);
+                .isNotEmpty();
+
+        assertThat(response.getHeaders().get(ALLOW).get(0))
+                .contains(OPTIONS.name()).contains(POST.name())
+                .doesNotContain(GET.name()).doesNotContain(PATCH.name()).doesNotContain(DELETE.name())
+                .doesNotContain(HEAD.name()).doesNotContain(PUT.name()).doesNotContain(TRACE.name());
     }
 
     @Test
@@ -59,5 +65,17 @@ public class UserCollection_FT extends AbstractTest {
         assertThat(headers).isNotNull().isNotEmpty();
         assertThat(headers.get(LOCATION)).isNotNull().isNotEmpty().hasSize(1);
         assertThat(headers.get(LOCATION).get(0)).isNotNull().isNotBlank();
+    }
+
+    private <T> HttpEntity<T> createHttpEntityForGet() {
+        HttpHeaders headers = getHeaders();
+        return new HttpEntity<>(headers);
+    }
+
+    private HttpHeaders getHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(singletonList(APPLICATION_JSON));
+        headers.setContentType(APPLICATION_JSON);
+        return headers;
     }
 }

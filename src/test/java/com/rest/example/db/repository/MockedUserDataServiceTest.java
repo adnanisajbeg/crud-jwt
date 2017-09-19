@@ -1,5 +1,6 @@
 package com.rest.example.db.repository;
 
+import com.rest.example.db.UserDataService;
 import com.rest.example.model.User;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @Created: 2017-09-17
  */
 public class MockedUserDataServiceTest {
-    MockedUserDataService mockedUserDataService;
+    UserDataService userDataService;
 
     private User user;
     private User baseUser;
@@ -26,7 +27,7 @@ public class MockedUserDataServiceTest {
 
     @Before
     public void setup() {
-        mockedUserDataService = new MockedUserDataService();
+        userDataService = new MockedUserDataService();
 
         user = new User()
                 .setFirstName(firstName)
@@ -49,60 +50,60 @@ public class MockedUserDataServiceTest {
 
     @Test
     public void save_new_user_returns_id() {
-        int id = mockedUserDataService.save(baseUser);
+        int id = userDataService.save(baseUser);
         assertThat(id).isGreaterThan(0);
     }
 
     @Test
     public void save_same_user_again_returns_zero() {
-        mockedUserDataService.save(user);
-        assertThat(mockedUserDataService.save(user)).isEqualTo(0);
+        userDataService.save(user);
+        assertThat(userDataService.save(user)).isEqualTo(0);
     }
 
     @Test
     public void save_another_user_returns_greater_id() {
-        int firstUserId = mockedUserDataService.save(user);
-        assertThat(mockedUserDataService.save(baseUser)).isGreaterThan(firstUserId);
+        int firstUserId = userDataService.save(user);
+        assertThat(userDataService.save(baseUser)).isGreaterThan(firstUserId);
     }
 
     @Test
     public void get_user_by_id_returns_correct_user() {
-        int savedUserId = mockedUserDataService.save(user);
-        assertThat(mockedUserDataService.getUserById(savedUserId)).isNotNull().isEqualToComparingFieldByField(user);
+        int savedUserId = userDataService.save(user);
+        assertThat(userDataService.getUserById(savedUserId)).isNotNull().isEqualToComparingFieldByField(user);
     }
 
     @Test
     public void delete_correct_user_returns_true() {
-        int savedUserId = mockedUserDataService.save(user);
-        assertThat(mockedUserDataService.deleteUserById(savedUserId)).isTrue();
+        int savedUserId = userDataService.save(user);
+        assertThat(userDataService.deleteUserById(savedUserId)).isTrue();
     }
 
     @Test
     public void delete_user_can_not_be_retrieved() {
-        int savedUserId = mockedUserDataService.save(user);
-        mockedUserDataService.deleteUserById(savedUserId);
-        assertThat(mockedUserDataService.getUserById(savedUserId)).isNull();
+        int savedUserId = userDataService.save(user);
+        userDataService.deleteUserById(savedUserId);
+        assertThat(userDataService.getUserById(savedUserId)).isNull();
     }
 
     @Test
-    public void delete_nonexisting_user_returns_false() {
-        mockedUserDataService.deleteUserById(someIdToBeDeleted);
-        assertThat(mockedUserDataService.deleteUserById(someIdToBeDeleted)).isFalse();
+    public void delete_non_existing_user_returns_false() {
+        userDataService.deleteUserById(someIdToBeDeleted);
+        assertThat(userDataService.deleteUserById(someIdToBeDeleted)).isFalse();
     }
 
     @Test
     public void update_user_returns_true() {
-        int savedUserId = mockedUserDataService.save(user);
-        User updatedUser = user.setPassword(randomAlphanumeric(7)).setPhoneNumber(newPhoneNumber);
-        assertThat(mockedUserDataService.update(savedUserId, user)).isTrue();
+        int savedUserId = userDataService.save(user);
+        user.setPassword(randomAlphanumeric(7)).setPhoneNumber(newPhoneNumber);
+        assertThat(userDataService.update(savedUserId, user)).isTrue();
     }
 
     @Test
     public void update_user_correctly() {
-        int savedUserId = mockedUserDataService.save(user);
-        User updatedUser = user.setPassword(randomAlphanumeric(7)).setPhoneNumber(newPhoneNumber);
-        mockedUserDataService.update(savedUserId, user);
-        User sameUser = mockedUserDataService.getUserById(savedUserId);
+        int savedUserId = userDataService.save(user);
+        user.setPassword(randomAlphanumeric(7)).setPhoneNumber(newPhoneNumber);
+        userDataService.update(savedUserId, user);
+        User sameUser = userDataService.getUserById(savedUserId);
         assertThat(sameUser).isNotNull();
         assertThat(sameUser.getPhoneNumber()).isEqualTo(newPhoneNumber);
     }

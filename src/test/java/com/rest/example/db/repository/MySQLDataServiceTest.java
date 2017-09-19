@@ -22,14 +22,11 @@ public class MySQLDataServiceTest {
     MySQLDataService mySQLDataService;
 
     private User user;
-    private User baseUser;
     private UserDAO userDAO;
-    private UserDAO baseUserDAO;
     private String firstName = "John";
     private String lastName = "Doe";
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
-    private int someIdToBeDeleted = 5;
     private String newPhoneNumber = "33232322";
 
     @Before
@@ -59,66 +56,33 @@ public class MySQLDataServiceTest {
                 .setPassword(pass);
 
         when(mySQLDataService.userConverter.convertUserToDAO(any(User.class))).thenReturn(userDAO);
+        when(mySQLDataService.userConverter.convertDAOToUser(any(UserDAO.class))).thenReturn(user);
         when(mySQLDataService.userRepository.save(any(UserDAO.class))).thenReturn(userDAO);
+        when(mySQLDataService.userRepository.findOne(any(Integer.class))).thenReturn(userDAO);
     }
 
     @Test
     public void save_new_user_returns_id() {
-        int id = mySQLDataService.save(baseUser);
+        int id = mySQLDataService.save(user);
         assertThat(id).isGreaterThan(0);
     }
 
-//    @Test
-//    public void save_same_user_again_returns_zero() {
-//        mySQLDataService.save(user);
-//        assertThat(mySQLDataService.save(user)).isEqualTo(0);
-//    }
-//
-//    @Test
-//    public void save_another_user_returns_greater_id() {
-//        int firstUserId = mySQLDataService.save(user);
-//        assertThat(mySQLDataService.save(baseUser)).isGreaterThan(firstUserId);
-//    }
-//
-//    @Test
-//    public void get_user_by_id_returns_correct_user() {
-//        int savedUserId = mySQLDataService.save(user);
-//        assertThat(mySQLDataService.getUserById(savedUserId)).isNotNull().isEqualToComparingFieldByField(user);
-//    }
-//
-//    @Test
-//    public void delete_correct_user_returns_true() {
-//        int savedUserId = mySQLDataService.save(user);
-//        assertThat(mySQLDataService.deleteUserById(savedUserId)).isTrue();
-//    }
-//
-//    @Test
-//    public void delete_user_can_not_be_retrieved() {
-//        int savedUserId = mySQLDataService.save(user);
-//        mySQLDataService.deleteUserById(savedUserId);
-//        assertThat(mySQLDataService.getUserById(savedUserId)).isNull();
-//    }
-//
-//    @Test
-//    public void delete_nonexisting_user_returns_false() {
-//        mySQLDataService.deleteUserById(someIdToBeDeleted);
-//        assertThat(mySQLDataService.deleteUserById(someIdToBeDeleted)).isFalse();
-//    }
-//
-//    @Test
-//    public void update_user_returns_true() {
-//        int savedUserId = mySQLDataService.save(user);
-//        user.setPassword(randomAlphanumeric(7)).setPhoneNumber(newPhoneNumber);
-//        assertThat(mySQLDataService.update(savedUserId, user)).isTrue();
-//    }
-//
-//    @Test
-//    public void update_user_correctly() {
-//        int savedUserId = mySQLDataService.save(user);
-//        user.setPassword(randomAlphanumeric(7)).setPhoneNumber(newPhoneNumber);
-//        mySQLDataService.update(savedUserId, user);
-//        User sameUser = mySQLDataService.getUserById(savedUserId);
-//        assertThat(sameUser).isNotNull();
-//        assertThat(sameUser.getPhoneNumber()).isEqualTo(newPhoneNumber);
-//    }
+    @Test
+    public void get_user_by_id_returns_correct_user() {
+        int savedUserId = mySQLDataService.save(user);
+        assertThat(mySQLDataService.getUserById(savedUserId)).isNotNull().isEqualToComparingFieldByField(user);
+    }
+
+    @Test
+    public void delete_correct_user_returns_true() {
+        int savedUserId = mySQLDataService.save(user);
+        assertThat(mySQLDataService.deleteUserById(savedUserId)).isTrue();
+    }
+
+    @Test
+    public void update_user_returns_true() {
+        int savedUserId = mySQLDataService.save(user);
+        user.setPassword(randomAlphanumeric(7)).setPhoneNumber(newPhoneNumber);
+        assertThat(mySQLDataService.update(savedUserId, user)).isTrue();
+    }
 }

@@ -1,4 +1,4 @@
-package com.rest.example.controller;
+package com.rest.example;
 
 import com.rest.example.model.User;
 import org.junit.Ignore;
@@ -7,15 +7,14 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-import java.util.Set;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpHeaders.ALLOW;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.HEAD;
@@ -35,16 +34,22 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserAccount_FT extends AbstractTest {
-    @Ignore
     @Test
     public void options_on_users_returns_correct_methods() {
-        Set<HttpMethod> allowedHttpMethodsForUsers = this.restTemplate.optionsForAllow(USER_URL + "/1");
+        ResponseEntity<User> response = restTemplate.exchange(
+                USER_URL + "/1",
+                OPTIONS,
+                createHttpEntityForGet(),
+                User.class
+        );
 
-        assertThat(allowedHttpMethodsForUsers)
+        assertThat(response.getHeaders().get(ALLOW))
                 .isNotNull()
-                .isNotEmpty()
-                .contains(OPTIONS).contains(GET).contains(PATCH).contains(DELETE)
-                .doesNotContain(HEAD).doesNotContain(PUT).doesNotContain(TRACE);
+                .isNotEmpty();
+
+        assertThat(response.getHeaders().get(ALLOW).get(0))
+                .contains(OPTIONS.name()).contains(GET.name()).contains(PATCH.name()).contains(DELETE.name())
+                .doesNotContain(HEAD.name()).doesNotContain(PUT.name()).doesNotContain(TRACE.name());
     }
 
     @Test
