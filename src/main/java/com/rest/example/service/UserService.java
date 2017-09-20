@@ -42,8 +42,7 @@ public class UserService {
     }
 
     public boolean update(int userId, User user) {
-        if (userValidator.validateUpdate(userId, user)) {   // TODO: move to validator
-            user.setId(userId);
+        if (userValidator.validateUpdate(userId, user)) {
             return userDataService.update(userId, user);
         }
 

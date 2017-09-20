@@ -16,9 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class UserConverterTest {
     private User user;
-    private User userWithoutUsername;
     private String firstName = "John";
-    private String firstNameForDoubleSave = "Smith";
     private String lastName = "Doe";
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
@@ -35,17 +33,9 @@ public class UserConverterTest {
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
                 .setUsername(randomAlphabetic(15))
-                .setPassword(randomAlphanumeric(20))
-                .addRole(1);
-
-        userWithoutUsername = new User()
-                .setFirstName(firstNameForDoubleSave)
-                .setLastName(lastName)
-                .setEmail(email)
-                .setPhoneNumber(phoneNumber)
-                .setPassword(randomAlphanumeric(22))
-                .addRole(1);
+                .setPassword(randomAlphanumeric(20));
     }
+
     @Test
     public void converter_does_not_return_null_when_given_user() {
         UserDAO userDAO = userConverter.convertUserToDAO(user);

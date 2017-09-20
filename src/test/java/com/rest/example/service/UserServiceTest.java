@@ -38,16 +38,14 @@ public class UserServiceTest {
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
                 .setUsername(randomAlphabetic(15))
-                .setPassword(randomAlphanumeric(20))
-                .addRole(1);
+                .setPassword(randomAlphanumeric(20));
 
         userWithoutUsername = new User()
                 .setFirstName(firstNameForDoubleSave)
                 .setLastName(lastName)
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
-                .setPassword(randomAlphanumeric(22))
-                .addRole(1);
+                .setPassword(randomAlphanumeric(22));
     }
 
     @Test
@@ -129,7 +127,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void update_nonexisting_user_returns_false() {
+    public void update_non_existing_user_returns_false() {
         int savedUserId = userService.save(user);
         assertThat(userService.update(++savedUserId, user)).isFalse();
     }

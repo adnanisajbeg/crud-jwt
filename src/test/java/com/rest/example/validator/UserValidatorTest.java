@@ -31,8 +31,7 @@ public class UserValidatorTest {
                 .setLastName(lastName)
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
-                .setPassword(randomAlphanumeric(20))
-                .addRole(1);
+                .setPassword(randomAlphanumeric(20));
     }
 
     @Test

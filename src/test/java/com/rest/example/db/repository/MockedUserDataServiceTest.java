@@ -35,8 +35,7 @@ public class MockedUserDataServiceTest {
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
                 .setUsername(randomAlphabetic(18))
-                .setPassword(randomAlphanumeric(15))
-                .addRole(1);
+                .setPassword(randomAlphanumeric(15));
 
         baseUser = new User()
                 .setFirstName(firstName)
@@ -44,8 +43,7 @@ public class MockedUserDataServiceTest {
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
                 .setUsername(randomAlphabetic(11))
-                .setPassword(randomAlphanumeric(24))
-                .addRole(1);
+                .setPassword(randomAlphanumeric(24));
     }
 
     @Test

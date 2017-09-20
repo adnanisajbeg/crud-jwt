@@ -37,8 +37,7 @@ public abstract class AbstractTest {
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
                 .setUsername(username)
-                .setPassword(password)
-                .addRole(1);
+                .setPassword(password);
 
         userWithRandomUsername = new User()
                 .setFirstName(firstName)
@@ -46,8 +45,6 @@ public abstract class AbstractTest {
                 .setEmail(email)
                 .setPhoneNumber(phoneNumber)
                 .setUsername(randomAlphabetic(10))
-                .setPassword(randomAlphanumeric(20))
-                .addRole(1);
-
+                .setPassword(randomAlphanumeric(20));
     }
 }
