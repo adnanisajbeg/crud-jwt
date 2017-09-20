@@ -3,6 +3,7 @@ package com.rest.example;
 import com.rest.example.db.UserDataService;
 import com.rest.example.db.repository.MySQLDataService;
 import com.rest.example.model.convertor.UserConverter;
+import com.rest.example.service.URIService;
 import com.rest.example.service.UserService;
 import com.rest.example.validator.UserValidator;
 import org.slf4j.Logger;
@@ -41,11 +42,13 @@ public class Application {
     }
 
     @Bean
-    public UserDataService userDataService() {
+    public UserDataService getUserDataService() {
         return new MySQLDataService();
     }
 
-
     @Bean
     public UserConverter getUserConverter() {return new UserConverter();}
+
+    @Bean
+    public URIService getURIService() {return new URIService();}
 }

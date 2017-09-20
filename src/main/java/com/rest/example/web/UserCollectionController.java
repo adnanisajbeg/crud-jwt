@@ -1,6 +1,7 @@
 package com.rest.example.web;
 
 import com.rest.example.model.User;
+import com.rest.example.service.URIService;
 import com.rest.example.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
@@ -34,6 +36,9 @@ public class UserCollectionController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    URIService uriService;
+
     @RequestMapping(method = OPTIONS, consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<Object> getOptions() {
         HttpHeaders headers = new HttpHeaders();
@@ -44,25 +49,24 @@ public class UserCollectionController {
 
     @RequestMapping(method = POST, consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<Object> saveNewUser(
-            @RequestBody User newUser) {
+            @RequestBody User newUser, HttpServletRequest request) {
         LOGGER.info("Saving new user: {}", newUser);
         int newUserId = userService.save(newUser);
+        return postResponse(request, newUserId);
+    }
 
+    private ResponseEntity<Object> postResponse(HttpServletRequest request, int newUserId) {
         if (newUserId > 0) {
             HttpHeaders headers = new HttpHeaders();
             try {
-                return ResponseEntity.created(createURI(newUserId)).headers(headers).contentType(MediaType.APPLICATION_JSON).build();
+                URI uri = uriService.addingIdToHttpServletRequestURL(request, newUserId);
+                return ResponseEntity.created(uri).headers(headers).contentType(MediaType.APPLICATION_JSON).build();
             } catch (URISyntaxException e) {
-                LOGGER.error("Failed to create URI for user: {} and userId: {}", newUser, newUserId);
+                LOGGER.error("Failed to create URI for userId: {}\nwith error: {}", newUserId, e);
             }
         }
 
-        // TODO: Find which code to return when save failed
         return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).build();
-    }
-
-    private URI createURI(int newUserId) throws URISyntaxException {
-        return new URI("/users/" + newUserId);
     }
 
     private Set<HttpMethod> getAllowedMethods() {
