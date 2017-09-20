@@ -1,7 +1,6 @@
-package com.rest.example;
+package com.rest.example.test;
 
 import com.rest.example.model.User;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -78,30 +77,6 @@ public class UserAccount_FT extends AbstractTest {
         assertThat(response.getBody().getUsername()).isEqualTo(userWithRandomUsername.getUsername());
     }
 
-    @Ignore
-    @Test
-    public void update_saved_user_returns_ok_status() {
-        String userUrl = getUrlForUser(userWithRandomUsername);
-        ResponseEntity<Object> exchange = updateUsersPhoneNumber(userWithRandomUsername, userUrl, newPhoneNumber);
-        assertThat(exchange.getStatusCode()).isEqualTo(OK);
-    }
-
-    @Ignore
-    @Test
-    public void update_saved_user_correctly() {
-        String userUrl = getUrlForUser(userWithRandomUsername);
-        updateUsersPhoneNumber(userWithRandomUsername, userUrl, newPhoneNumber);
-        ResponseEntity<User> getUserResponse = restTemplate.exchange(
-                userUrl,
-                GET,
-                createHttpEntityForGet(),
-                User.class
-        );
-
-        assertThat(getUserResponse.getBody()).isNotNull();
-        assertThat(getUserResponse.getBody().getPhoneNumber()).isNotNull().isNotBlank().isEqualTo(newPhoneNumber);
-    }
-
     @Test
     public void delete_saved_user_returns_correct_status() {
         String urlForUser = getUrlForUser(user);
@@ -137,7 +112,7 @@ public class UserAccount_FT extends AbstractTest {
     }
 
     @Test
-    public void deleted_nonexisting_user_returns_correct_status() {
+    public void deleted_non_existing_user_returns_correct_status() {
         String urlForUser = getUrlForUser(userWithRandomUsername);
         restTemplate.exchange(urlForUser, DELETE, createHttpEntityForDelete(), Object.class);
         ResponseEntity<Object> secondTryToDeleteUser = restTemplate

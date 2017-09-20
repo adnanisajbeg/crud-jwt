@@ -1,4 +1,4 @@
-package com.rest.example;
+package com.rest.example.test;
 
 import com.rest.example.model.User;
 import org.junit.Before;

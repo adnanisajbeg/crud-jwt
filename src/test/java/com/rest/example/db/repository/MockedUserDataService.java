@@ -19,8 +19,7 @@ public class MockedUserDataService implements UserDataService {
     @Override
     public int save(User user) {
         if (!USERNAME_CACHE.contains(user.getUsername())) {
-            int id = saveUserToCache(user);
-            return id;
+            return saveUserToCache(user);
         }
         return 0;
     }
