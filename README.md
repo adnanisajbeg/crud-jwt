@@ -20,7 +20,7 @@ This project can be build locally by using standard maven command for build:
 
 In order to run this service, you need to provide properties, either by placing **application.properties** in same folder as source, or by providing path to properties file when starting the service jar file. Command to start the service:
 
-    java -jar crud-jwt-1.0.0-SNAPSHOT.jar --spring.config.location=classpath:/application.properties
+    java -jar crud-test-project.jar --spring.config.location=classpath:/application.properties
 
 **spring.config.location** is required if properties file is not provider in classpath root, classpath /config package, current directory or in /config subdirectory.
 
