@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MockedUserDataService implements UserDataService {
     private static int USER_ID_GENERATOR = 0;
     private static final ConcurrentHashMap<Integer, UserDAO> USER_CACHE = new ConcurrentHashMap<>(30);
+    private static final ConcurrentHashMap<String, UserDAO> USER_USERNAME_CACHE = new ConcurrentHashMap<>(30);
     private static final HashSet<String> USERNAME_CACHE = new HashSet<>(30);
 
     @Override
@@ -35,6 +36,7 @@ public class MockedUserDataService implements UserDataService {
         USER_ID_GENERATOR++;
         userDAO.setId(USER_ID_GENERATOR);
         USER_CACHE.put(userDAO.getId(), userDAO);
+        USER_USERNAME_CACHE.put(userDAO.getUsername(), userDAO);
         return userDAO.getId();
     }
 
@@ -56,15 +58,23 @@ public class MockedUserDataService implements UserDataService {
 
     }
 
+    @Override
+    public User getByUsername(String username) {
+        UserDAO userDAO = USER_USERNAME_CACHE.get(username);
+        return convertDAOToUser(userDAO);
+    }
+
     private boolean updateCache(int id, User user) {
         UserDAO userDAO = convertUserToDAO(user);
         USER_CACHE.put(id, userDAO);
         USERNAME_CACHE.add(user.getUsername());
+        USER_USERNAME_CACHE.put(userDAO.getUsername(), userDAO);
         return true;
     }
 
     private void deleteUser(UserDAO user) {
         USERNAME_CACHE.remove(user.getUsername());
+        USER_USERNAME_CACHE.remove(user.getUsername());
         USER_CACHE.remove(user.getId());
     }
 

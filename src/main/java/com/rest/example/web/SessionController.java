@@ -15,11 +15,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  */
 @RequestMapping("/login")
 public class SessionController {
-
     @RequestMapping(method = POST, consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<String> login(
             @RequestBody
-                    Login newUser, HttpServletRequest request) {
-        return ResponseEntity.ok().body("test");
+                    Login login, HttpServletRequest request) {
+        return ResponseEntity.ok().build();
     }
 }

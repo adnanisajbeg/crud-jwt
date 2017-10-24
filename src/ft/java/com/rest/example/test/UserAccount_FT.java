@@ -131,7 +131,7 @@ public class UserAccount_FT extends AbstractTest {
     private String getUrlForUser(User user) {
         ResponseEntity<String> response = restTemplate.postForEntity(USER_URL, user, String.class);
         List<String> links = response.getHeaders().get(HttpHeaders.LOCATION);
-        return links.get(0);
+        return links == null ? null : links.get(0);
     }
 
     private HttpEntity<User> createHttpEntityForPatch(User user) {

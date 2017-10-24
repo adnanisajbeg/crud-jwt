@@ -22,6 +22,8 @@ import static java.util.Collections.emptyList;
  * @Created: 2017-10-01
  */
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
+    // TODO: DELETE
+//    private static Logger LOG = LoggerFactory.getLogger(JWTLoginFilter.class);
 
     public JWTLoginFilter(String url, AuthenticationManager authManager) {
         super(new AntPathRequestMatcher(url));
@@ -34,6 +36,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
             throws AuthenticationException, IOException, ServletException {
         Login login = new ObjectMapper()
                 .readValue(req.getInputStream(), Login.class);
+
         return getAuthenticationManager().authenticate(
                 new UsernamePasswordAuthenticationToken(
                         login.getUsername(),

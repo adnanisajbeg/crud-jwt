@@ -4,6 +4,8 @@ import com.rest.example.model.User;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
@@ -15,6 +17,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 public abstract class AbstractTest {
     static String USER_URL = "/users";
     static String INFO_URL = "/info";
+    static String LOGIN_URL = "/login";
 
     User user;
     User userWithRandomUsername;
@@ -22,7 +25,6 @@ public abstract class AbstractTest {
     private String lastName = "Doe";
     private String email = "john.doe@gmail.com";
     private String phoneNumber = "12345678";
-    String newPhoneNumber = "23333332";
     private String password = "pass123456";
     private String username = "john.doe";
 
@@ -31,6 +33,12 @@ public abstract class AbstractTest {
 
     @Before
     public void setup() {
+        RestTemplate restTemplate = this.restTemplate.getRestTemplate();
+
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setOutputStreaming(false);
+        restTemplate.setRequestFactory(requestFactory);
+
         user = new User()
                 .setFirstName(firstName)
                 .setLastName(lastName)

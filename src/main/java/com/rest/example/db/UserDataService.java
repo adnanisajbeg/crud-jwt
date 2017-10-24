@@ -11,4 +11,5 @@ public interface UserDataService {
     User getUserById(int id);
     boolean deleteUserById(int id);
     boolean update(int id, User user);
+    User getByUsername(String username);
 }
