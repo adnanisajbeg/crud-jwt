@@ -99,4 +99,15 @@ public class MySQLDataService implements UserDataService {
 
         return saved.getId();
     }
+
+    @Override
+    public User getByUsername(String username) {
+        try {
+            UserDAO byUsername = userRepository.findByUsername(username);
+            return userConverter.convertDAOToUser(byUsername);
+        } catch (Exception e) {
+            LOGGER.error("Failed to find by username!", e);
+            return null;
+        }
+    }
 }

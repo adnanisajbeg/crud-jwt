@@ -44,7 +44,6 @@ public class UserTest {
 
     @Test
     public void user_builds_correctly() {
-        System.out.println(firstUser);
         assertThat(firstUser.toString())
                 .isNotNull()
                 .isNotBlank()

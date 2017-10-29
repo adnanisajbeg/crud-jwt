@@ -33,6 +33,14 @@ public class UserService {
         return null;
     }
 
+    public User getByUsername(String username) {
+        if (username == null || username.trim().isEmpty()) {
+            return null;
+        }
+
+        return userDataService.getByUsername(username);
+    }
+
     public boolean delete(int userId) {
         if (userId > 0) {
             return userDataService.deleteUserById(userId);

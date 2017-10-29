@@ -8,5 +8,5 @@ import org.springframework.data.repository.CrudRepository;
  * @Created: 2017-09-19
  */
 public interface UserRepository extends CrudRepository<UserDAO, Integer> {
-
+    UserDAO findByUsername(String username);
 }
