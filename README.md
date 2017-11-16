@@ -36,6 +36,23 @@ Since this service uses Spring Boot, you can have several more alternatives in p
     hibernate.dialect - hibernates dialect for provided database
     connection.driver_class - db connection driver
 
+#### properties values example:
+
+    server.port=8082
+    logging.level.org.springframework.web=ERROR
+    logging.level.com.rest.example=INFO
+    spring.jpa.hibernate.ddl-auto=create
+    spring.datasource.url=jdbc:mysql://localhost:3306/ExampleDB?useSSL=false
+    spring.datasource.username=crudappuser
+    spring.datasource.password=mypassisstrong1!
+    hibernate.dialect = org.hibernate.dialect.MySQLDialect
+    connection.driver_class=com.mysql.jdbc.Driver
+
+    hibernate.c3p0.min_size=5
+    hibernate.c3p0.max_size=20
+    hibernate.c3p0.timeout=10000
+    hibernate.c3p0.max_statements=50
+
 ### Running in Development Mode
 As this is a Spring Boot app, you can run it by simply running the file com.rest.example.Application.java. You will need to populate src/main/resources/application.properties with required properties.
 
