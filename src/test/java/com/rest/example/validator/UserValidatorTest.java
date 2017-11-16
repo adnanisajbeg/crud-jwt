@@ -113,4 +113,40 @@ public class UserValidatorTest {
     public void validate_user_dao_returns_false_when_given_null() {
         assertThat(userValidator.userDAOIsValid(null)).isFalse();
     }
+
+    @Test
+    public void validate_password_returns_false_when_given_null() {
+        assertThat(userValidator.validatePassword(null)).isFalse();
+    }
+
+    @Test
+    public void validate_password_returns_false_when_given_empty_string() {
+        assertThat(userValidator.validatePassword("")).isFalse();
+    }
+
+    @Test
+    public void validate_password_returns_false_when_given_blank_string() {
+        assertThat(userValidator.validatePassword("  ")).isFalse();
+    }
+
+    @Test
+    public void validate_password_returns_false_when_given_small_password() {
+        assertThat(userValidator.validatePassword(randomAlphanumeric(7))).isFalse();
+    }
+
+    @Test
+    public void validate_password_returns_false_when_pass_contains_spaces() {
+        assertThat(
+                userValidator.validatePassword(
+                        randomAlphanumeric(4) +
+                        " " +
+                        randomAlphabetic(12)))
+                .isFalse();
+    }
+
+    @Test
+    public void validate_password_returns_true_when_given_correct_password() {
+        assertThat(userValidator.validatePassword(randomAlphanumeric(22))).isTrue();
+    }
+
 }
